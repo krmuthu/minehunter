@@ -1,11 +1,33 @@
+
 body {
+    background-color: #fff;
     margin: 0;
+    color: #42b983;
+    font-family:"Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
   }
 .main {
     width: 1000px;
     margin: 0 auto;
-    background-color: beige;
  }
 .main h1 {
     text-align: center;
+}
+.gamecontainer {
+    background-color: blueviolet;
+    width: 90px;
+    margin:0 auto;
+}
+.buttoncontainer {
+    padding: 30px 0;
+    width: 1000px;
+    text-align: center;
+    clear: both;
+}
+.box {
+    width: 30px;
+    height: 30px;
+    background-color: #e6e4a9;
+    float: left;
+    box-sizing: border-box;
+    border:1px solid #f2f2f2;
 }
