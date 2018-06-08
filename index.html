@@ -13,24 +13,25 @@
   <![endif]-->
   <div class="main">
     <h1>MineHunter</h1>
-    <div class="gamecontainer" >
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
-      <div class="box"></div>
+    <div class="gamecontainer" id="game" >
+      <div ></div>
+      
+      <div ></div>
+      <div ></div>
+      <div ></div>
+      <div ></div>
+      <div ></div>
+      <div ></div>
+      <div ></div>
+      <div ></div>
     </div>
     <div class="buttoncontainer">
-      <select>
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
+      <select id="level">
+        <option value=1>Easy</option>
+        <option value=2>Medium</option>
+        <option value=3>Hard</option>
       </select>
-      <button>New Game</button>
+      <button id="new">New Game</button>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

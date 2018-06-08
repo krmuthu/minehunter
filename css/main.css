@@ -2,6 +2,7 @@
 body {
     background-color: #fff;
     margin: 0;
+    
     color: #42b983;
     font-family:"Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
   }
@@ -23,7 +24,7 @@ body {
     text-align: center;
     clear: both;
 }
-.box {
+.gamecontainer div {
     width: 30px;
     height: 30px;
     background-color: #e6e4a9;
