@@ -32,6 +32,6 @@ body {
     box-sizing: border-box;
     border:1px solid #f2f2f2;
 }
-.gamecontainer div[data-bomb="0"] {
+.gamecontainer div[data-bomb="1"] {
     background-color: #E18728;
 }
