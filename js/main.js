@@ -1,6 +1,7 @@
 $(function() {
     var num;
     var totalBox;
+    var checkAlready = [];
     var startGame = function() {
         var level = $('#level').val();
         num = 5+level*4;
@@ -14,11 +15,12 @@ $(function() {
             }else {
                 $( "#game" ).append( '<div data-id="'+i+'" data-bomb="1"></div>' );
             }
-            
+    
         }
     }
-    var getNeighbour = function getNeighbour(id) {
-        var neighbour = []
+    var getNeighbour = function getNeighbour(id,camefrom) {
+        var neighbour = [];
+        checkAlready.push(id);
         if(id%num != 0){
             neighbour.push(id-1);
             if(id > 8){
@@ -42,11 +44,34 @@ $(function() {
         if(id < totalBox-num){
             neighbour.push(id+num);
         }
-        
-        return neighbour;
+        return neighbour.filter(function (params) {
+            return  checkAlready.indexOf(params) == -1;
+        });
     }
-    var checkForBomb = function checkForBomb(id) {
+    var checkForBomb = function checkForBomb(arr) {
+        var numberOfBomb = 0;
+        arr.forEach(function checkFn(id) {
+            if($('div[data-id="'+id+'"]').data('bomb') === 1){
+                numberOfBomb++;
+            };
+        });
+        return numberOfBomb;
+    }
     
+    var openBox = function openBox(id,camefrom) {
+        var neighbour = getNeighbour(id,camefrom);
+        
+        var numberOfBomb = checkForBomb(neighbour);
+        console.log(id,camefrom,neighbour,numberOfBomb)
+        if(numberOfBomb === 0){
+            // open neighbour
+            neighbour.map(function name(params) {
+               openBox(params,id);
+            });
+        }else {
+            // reveal number
+            $('div[data-id="'+id+'"]').html(numberOfBomb);
+        }
     }
     
     $( "#game" ).click('div',function clickFn(e) {
@@ -54,9 +79,9 @@ $(function() {
             console.log('you clicked on bomb');
         } else {
             var id = $(e.target).data('id');
-            console.log(id)
-            getNeighbour(id)
-
+            console.log(id);
+            checkAlready = [];
+            openBox(id);
         };
     })
     $('#new').click(startGame)
