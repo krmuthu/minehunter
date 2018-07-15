@@ -11,9 +11,9 @@ $(function() {
         for (let i = 0; i < totalBox; i++) {
             var isBomb = Math.floor(Math.random()*5);
             if(isBomb){
-                $( "#game" ).append( '<div data-id="'+i+'" ></div>' );
+                $( "#game" ).append( '<div class="box" data-id="'+i+'" ></div>' );
             }else {
-                $( "#game" ).append( '<div data-id="'+i+'" data-bomb="1"></div>' );
+                $( "#game" ).append( '<div class="box" data-id="'+i+'" data-bomb="1"></div>' );
             }
     
         }
@@ -57,7 +57,6 @@ $(function() {
         });
         return numberOfBomb;
     }
-    
     var openBox = function openBox(id,camefrom) {
         var neighbour = getNeighbour(id,camefrom);
         
@@ -65,16 +64,18 @@ $(function() {
         console.log(id,camefrom,neighbour,numberOfBomb)
         if(numberOfBomb === 0){
             // open neighbour
+            $('div[data-id="'+id+'"]').addClass('reveal');
             neighbour.map(function name(params) {
                openBox(params,id);
             });
         }else {
             // reveal number
+            $('div[data-id="'+id+'"]').addClass('reveal');
             $('div[data-id="'+id+'"]').html(numberOfBomb);
         }
     }
     
-    $( "#game" ).click('div',function clickFn(e) {
+    $( "#game" ).click('.box',function clickFn(e) {
         if($(e.target).data('bomb') == 1) {
             console.log('you clicked on bomb');
         } else {
