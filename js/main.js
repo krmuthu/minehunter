@@ -64,13 +64,13 @@ $(function() {
         console.log(id,camefrom,neighbour,numberOfBomb)
         if(numberOfBomb === 0){
             // open neighbour
-            $('div[data-id="'+id+'"]').addClass('reveal');
+            $('div[data-id="'+id+'"]').addClass('revealed');
             neighbour.map(function name(params) {
                openBox(params,id);
             });
         }else {
-            // reveal number
-            $('div[data-id="'+id+'"]').addClass('reveal');
+            // revealed number
+            $('div[data-id="'+id+'"]').addClass('revealed');
             $('div[data-id="'+id+'"]').html(numberOfBomb);
         }
     }
@@ -78,6 +78,7 @@ $(function() {
     $( "#game" ).click('.box',function clickFn(e) {
         if($(e.target).data('bomb') == 1) {
             console.log('you clicked on bomb');
+            $('div[data-bomb="1"]').addClass('blast');
         } else {
             var id = $(e.target).data('id');
             console.log(id);
