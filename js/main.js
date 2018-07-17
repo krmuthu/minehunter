@@ -2,7 +2,13 @@ $(function() {
     var num;
     var totalBox;
     var checkAlready = [];
+    var gameOver = false;
     var startGame = function() {
+        //reset game
+        gameOver = false;
+        $('#gameover').hide();
+        $('#win').hide();
+
         var level = $('#level').val();
         num = 5+level*4;
         totalBox = num*num;
@@ -15,7 +21,6 @@ $(function() {
             }else {
                 $( "#game" ).append( '<div class="box" data-id="'+i+'" data-bomb="1"></div>' );
             }
-    
         }
     }
     var getNeighbour = function getNeighbour(id,camefrom) {
@@ -76,12 +81,13 @@ $(function() {
     }
     
     $( "#game" ).click('.box',function clickFn(e) {
+        if(gameOver) return false;
         if($(e.target).data('bomb') == 1) {
-            console.log('you clicked on bomb');
+            gameOver = true;
+            $('#gameover').show();
             $('div[data-bomb="1"]').addClass('blast');
         } else {
             var id = $(e.target).data('id');
-            console.log(id);
             checkAlready = [];
             openBox(id);
         };

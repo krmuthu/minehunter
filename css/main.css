@@ -40,3 +40,15 @@ body {
 .gamecontainer div.blast {
     background-color: #f00;
 }
+#result div {
+    display: none;
+    position: absolute;
+    left: 50%;
+    margin-left: -42px;;
+    top:100px;
+    background-color: #fff;
+    padding: 10px;
+}
+#result #gameover {
+    margin-left: -50px;
+}
