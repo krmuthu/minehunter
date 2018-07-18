@@ -1,14 +1,16 @@
 $(function() {
     var num;
     var totalBox;
-    var checkAlready = [];
+    var openAlready = [];
     var gameOver = false;
+    var totalBomb = 0;
     var startGame = function() {
         //reset game
+        totalBomb = 0;
         gameOver = false;
+        openAlready = [];
         $('#gameover').hide();
         $('#win').hide();
-
         var level = $('#level').val();
         num = 5+level*4;
         totalBox = num*num;
@@ -19,16 +21,16 @@ $(function() {
             if(isBomb){
                 $( "#game" ).append( '<div class="box" data-id="'+i+'" ></div>' );
             }else {
+                totalBomb++;
                 $( "#game" ).append( '<div class="box" data-id="'+i+'" data-bomb="1"></div>' );
             }
         }
     }
     var getNeighbour = function getNeighbour(id,camefrom) {
         var neighbour = [];
-        checkAlready.push(id);
         if(id%num != 0){
             neighbour.push(id-1);
-            if(id > 8){
+            if(id > (num-1)){
                 neighbour.push(id-num-1);
             }
             if(id < totalBox-num){
@@ -43,14 +45,14 @@ $(function() {
                 neighbour.push(id+num+1);
             }
         }
-        if(id > 8){
+        if(id > (num-1)){
             neighbour.push(id-num);
         }
         if(id < totalBox-num){
             neighbour.push(id+num);
         }
         return neighbour.filter(function (params) {
-            return  checkAlready.indexOf(params) == -1;
+            return  openAlready.indexOf(params) == -1;
         });
     }
     var checkForBomb = function checkForBomb(arr) {
@@ -62,33 +64,35 @@ $(function() {
         });
         return numberOfBomb;
     }
-    var openBox = function openBox(id,camefrom) {
-        var neighbour = getNeighbour(id,camefrom);
-        
+    var openBox = function openBox(id) {
+        if(openAlready.indexOf(id) !== -1) return false;
+        var neighbour = getNeighbour(id);
         var numberOfBomb = checkForBomb(neighbour);
-        console.log(id,camefrom,neighbour,numberOfBomb)
+        $('div[data-id="'+id+'"]').addClass('revealed');
+        openAlready.push(id);
+        if(openAlready.length == totalBox - totalBomb) {
+            $('#win').show();
+        }
         if(numberOfBomb === 0){
             // open neighbour
-            $('div[data-id="'+id+'"]').addClass('revealed');
             neighbour.map(function name(params) {
                openBox(params,id);
             });
         }else {
             // revealed number
-            $('div[data-id="'+id+'"]').addClass('revealed');
             $('div[data-id="'+id+'"]').html(numberOfBomb);
         }
+
     }
     
     $( "#game" ).click('.box',function clickFn(e) {
-        if(gameOver) return false;
+        if(gameOver || $(e.target).hasClass('revealed')) return false;
         if($(e.target).data('bomb') == 1) {
             gameOver = true;
             $('#gameover').show();
             $('div[data-bomb="1"]').addClass('blast');
         } else {
             var id = $(e.target).data('id');
-            checkAlready = [];
             openBox(id);
         };
     })
