@@ -10,6 +10,7 @@ $(function() {
         gameOver = false;
         openAlready = [];
         $('#gameover').hide();
+        $('#score').html('0');
         $('#win').hide();
         var level = $('#level').val();
         num = 5+level*4;
@@ -70,6 +71,7 @@ $(function() {
         var numberOfBomb = checkForBomb(neighbour);
         $('div[data-id="'+id+'"]').addClass('revealed');
         openAlready.push(id);
+        $('#score').html(openAlready.length)
         if(openAlready.length == totalBox - totalBomb) {
             $('#win').show();
         }
