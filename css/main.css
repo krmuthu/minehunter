@@ -53,3 +53,6 @@ body {
 #result #gameover {
     margin-left: -50px;
 }
+.flag {
+    color:red;
+}

@@ -105,6 +105,17 @@ $(function() {
             openBox(id);
         };
     })
+    $('#game').contextmenu(function(e) {
+        if($(e.target).hasClass('box')){
+            if($(e.target).hasClass('flag')){
+                $(e.target).removeClass('flag').html('')
+            }else {
+                $(e.target).addClass('flag').html('⚑')
+            }
+        }
+        return false;
+    });
+    
     $('#new').click(startGame)
     startGame();
 });
