@@ -4,6 +4,8 @@ $(function() {
     var openAlready = [];
     var gameOver = false;
     var totalBomb = 0;
+    var highscore = localStorage.getItem("ms_highscore") || 0;
+    $('#highscore').html(highscore);
     var startGame = function() {
         //reset game
         totalBomb = 0;
@@ -71,8 +73,14 @@ $(function() {
         var numberOfBomb = checkForBomb(neighbour);
         $('div[data-id="'+id+'"]').addClass('revealed');
         openAlready.push(id);
-        $('#score').html(openAlready.length)
-        if(openAlready.length == totalBox - totalBomb) {
+        var score = openAlready.length;
+        $('#score').html(score);
+        if(score > highscore){
+            $('#highscore').html(score);
+            localStorage.setItem("ms_highscore", score);
+
+        }
+        if(score == totalBox - totalBomb) {
             $('#win').show();
         }
         if(numberOfBomb === 0){
@@ -86,7 +94,6 @@ $(function() {
         }
 
     }
-    
     $( "#game" ).click('.box',function clickFn(e) {
         if(gameOver || $(e.target).hasClass('revealed')) return false;
         if($(e.target).data('bomb') == 1) {
