@@ -31,6 +31,7 @@ $(function() {
     }
     var getNeighbour = function getNeighbour(id,camefrom) {
         var neighbour = [];
+        
         if(id%num != 0){
             neighbour.push(id-1);
             if(id > (num-1)){
@@ -42,7 +43,7 @@ $(function() {
         }
         if(id%num != (num-1)){
             neighbour.push(id+1);
-            if(id > 8){
+            if(id > num-1){
                 neighbour.push(id-num+1);
             }if(id < totalBox-num){
                 neighbour.push(id+num+1);
