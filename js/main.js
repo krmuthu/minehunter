@@ -3,13 +3,13 @@ $(function() {
     var totalBox;
     var openAlready = [];
     var gameOver = false;
-    var totalBomb = 0;
+    var bomb = [];
     var highscore = localStorage.getItem("ms_highscore") || 0;
     $('#highscore').html(highscore);
     var startGame = function() {
         //reset game
-        totalBomb = 0;
         gameOver = false;
+        bomb = [];
         openAlready = [];
         $('#gameover').hide();
         $('#score').html('0');
@@ -21,17 +21,14 @@ $(function() {
         $( "#game" ).html( "" );
         for (let i = 0; i < totalBox; i++) {
             var isBomb = Math.floor(Math.random()*5);
-            if(isBomb){
-                $( "#game" ).append( '<div class="box" data-id="'+i+'" ></div>' );
-            }else {
-                totalBomb++;
-                $( "#game" ).append( '<div class="box" data-id="'+i+'" data-bomb="1"></div>' );
+            $( "#game" ).append( '<div class="box" data-id="'+i+'" ></div>' );
+            if(isBomb === 0){
+                bomb.push(i);
             }
         }
     }
     var getNeighbour = function getNeighbour(id,camefrom) {
         var neighbour = [];
-        
         if(id%num != 0){
             neighbour.push(id-1);
             if(id > (num-1)){
@@ -59,10 +56,15 @@ $(function() {
             return  openAlready.indexOf(params) == -1;
         });
     }
+    var blast = function blast(arr) {
+        bomb.forEach(function(id){
+            $('div[data-id="'+id+'"]').addClass('blast');
+        })
+    }
     var checkForBomb = function checkForBomb(arr) {
         var numberOfBomb = 0;
         arr.forEach(function checkFn(id) {
-            if($('div[data-id="'+id+'"]').data('bomb') === 1){
+            if(bomb.indexOf(id) !== -1){
                 numberOfBomb++;
             };
         });
@@ -81,7 +83,8 @@ $(function() {
             localStorage.setItem("ms_highscore", score);
 
         }
-        if(score == totalBox - totalBomb) {
+        console.log(bomb.length)
+        if(score == totalBox - bomb.length) {
             $('#win').show();
         }
         if(numberOfBomb === 0){
@@ -97,12 +100,12 @@ $(function() {
     }
     $( "#game" ).click('.box',function clickFn(e) {
         if(gameOver || $(e.target).hasClass('revealed')) return false;
-        if($(e.target).data('bomb') == 1) {
+        var id = $(e.target).data('id');
+        if(bomb.indexOf(id) !== -1) {
             gameOver = true;
             $('#gameover').show();
-            $('div[data-bomb="1"]').addClass('blast');
+            blast();
         } else {
-            var id = $(e.target).data('id');
             openBox(id);
         };
     })
@@ -116,7 +119,6 @@ $(function() {
         }
         return false;
     });
-    
     $('#new').click(startGame)
     startGame();
 });
